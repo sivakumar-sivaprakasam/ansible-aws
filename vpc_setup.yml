@@ -93,4 +93,14 @@
       resource_tags: 
         Name: sivakumar-privsub3
     register: privsub3_out
+
+  - name: Internet Gateway setup for VPC
+    ec2_vpc_igw:
+      vpc_id: "{{ vpc_out.vpc.id }}"
+      region: "{{ region }}"
+      state: "{{ state }}"
+      resource_tags: 
+        Name: sivakumar-vpc-igw
+    register: igw_out
+      
     
