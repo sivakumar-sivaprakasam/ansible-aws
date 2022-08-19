@@ -127,8 +127,8 @@
       if_exist_do_not_create: true
     register: nat_gw_out
 
-  - debug:
-      var: nat_gw_out
+#  - debug:
+#      var: nat_gw_out
 
   - name: Setup private subnet route table
     ec2_vpc_route_table:
