@@ -53,4 +53,5 @@
         Project: Sivakumar_Test
         Owner: Sivakumar
       group_id: "{{ bh_sg_out.group_id }}"
+      vpc_subnet_id: "{{ pubsub1id }}"
     register: bh_out
