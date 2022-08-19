@@ -1,0 +1,56 @@
+- name: Setup Bastion Host
+  hosts: localhost
+  connection: local
+  gather_facts: False
+  tasks:
+  - name: Import Bastion Host variables
+    include_vars: vars/bastion_setup
+
+  - name: Import VPC ID variables
+    include_vars: vars/vpc_output_vars
+
+  - name: Create EC2 keypair
+    ec2_key:
+      name: sivakumar-bhost-key
+      region: "{{ region }}"
+    register: key_out
+
+  - name: Save private key into file
+    copy:
+      content: "{{ key_out.key.private_key }}"
+      dest: ./bastion_key.pem
+      mode: 0600
+    when: key_out.changed
+
+  - name: Create security group for bastion host
+    ec2_group:
+      name: bastion-host-sg
+      description: Allow port 22
+      region: "{{ region }}"
+      vpc_id: "{{ vpcid }}"
+      rules:
+        - proto: tcp
+          from_port: 22
+          to_port: 22
+          cidr_ip: "{{ MYIP }}"
+    register: bh_sg_out
+
+  - name: Creating bastion host
+    ec2: 
+      key_name: sivakumar-bhost-key
+      region: "{{ region }}"
+      instance_type: t2.micro
+      image: "{{ bastion_ami }}"
+      wait: yes
+      wait_timeout: 300
+      instance_tags:
+        Name: "Sivakumar_Bastion_Host"
+        Project: Sivakumar_Test
+        Owner: Sivakumar
+      exact_count: 1
+      count_tag:
+        Name: "Sivakumar_Bastion_Host"
+        Project: Sivakumar_Test
+        Owner: Sivakumar
+      group_id: "{{ bh_sg_out.group_id }}"
+    register: bh_out
