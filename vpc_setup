@@ -1,0 +1,22 @@
+vpc_name: "sivakumar-vpc"
+
+# VPC Range
+vpcCidr: '172.20.0.0/16'
+
+# Subnet Range
+PubSub1Cidr: 172.20.1.0/24
+PubSub2Cidr: 172.20.2.0/24
+PubSub3Cidr: 172.20.3.0/24
+PrivSub1Cidr: 172.20.4.0/24
+PrivSub2Cidr: 172.20.5.0/24
+PrivSub3Cidr: 172.20.6.0/24
+
+# Region Name
+region: "ap-southeast-1"
+
+# Zone Names
+zone1: ap-southeast-1a
+zone2: ap-southeast-1b
+zone3: ap-southeast-1c
+
+state: present
